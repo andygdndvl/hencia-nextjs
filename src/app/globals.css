@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles globaux pour les vidéos */
+video {
+  object-fit: cover;
+}
+
+/* Optimisations pour les animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Amélioration des performances de scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimisation des images */
+img {
+  max-width: 100%;
+  height: auto;
+}
