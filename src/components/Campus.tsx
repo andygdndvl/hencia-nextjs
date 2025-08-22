@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import { MapPin } from 'lucide-react';
 
 interface CampusProps {
@@ -52,19 +52,33 @@ const Campus: React.FC<CampusProps> = ({ onNavigateToCampus }) => {
               </div>
             </div>
           </div>
-          
+
+
           {/* Image à droite */}
-          <div className="flex-shrink-0 w-full lg:w-[28rem] px-4 lg:px-0">
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-              <img 
-                src="/images/about/campus.png"
-                alt="Campus HENCIA"
-                className="w-full h-48 sm:h-64 lg:h-80 object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling.style.display = 'flex';
-                }}
-              />
+<div className="flex-shrink-0 w-full lg:w-[28rem] px-4 lg:px-0">
+  <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+    {(() => {
+      const [imgError, setImgError] = useState(false);
+      return !imgError ? (
+        <img
+          src="/images/about/campus.png"
+          alt="Campus HENCIA"
+          className="w-full h-48 sm:h-64 lg:h-80 object-cover"
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        <div className="flex items-center justify-center w-full h-48 sm:h-64 lg:h-80 bg-gray-200 dark:bg-gray-800">
+          <span className="text-sm opacity-70">Image indisponible</span>
+        </div>
+      );
+    })()}
+  </div>
+</div>
+
+
+          
+          
+          
               {/* Fallback when image not found */}
               <div className="w-full h-48 sm:h-64 lg:h-80 bg-gradient-to-br from-[#6366f1]/20 to-purple-600/20 flex items-center justify-center rounded-2xl" style={{display: 'none'}}>
                 <div className="text-center">
