@@ -7,6 +7,7 @@ interface CampusProps {
 
 const Campus: React.FC<CampusProps> = ({ onNavigateToCampus }) => {
   const [hoveredCampus, setHoveredCampus] = React.useState<string>('');
+  const [imgError, setImgError] = useState(false);
 
   const campusData = [
     { name: "Paris", image: "/images/campus/ecole marketing paris.jpg" },
@@ -57,21 +58,18 @@ const Campus: React.FC<CampusProps> = ({ onNavigateToCampus }) => {
           {/* Image à droite */}
 <div className="flex-shrink-0 w-full lg:w-[28rem] px-4 lg:px-0">
   <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-    {(() => {
-      const [imgError, setImgError] = useState(false);
-      return !imgError ? (
-        <img
-          src="/images/about/campus.png"
-          alt="Campus HENCIA"
-          className="w-full h-48 sm:h-64 lg:h-80 object-cover"
-          onError={() => setImgError(true)}
-        />
-      ) : (
-        <div className="flex items-center justify-center w-full h-48 sm:h-64 lg:h-80 bg-gray-200 dark:bg-gray-800">
-          <span className="text-sm opacity-70">Image indisponible</span>
-        </div>
-      );
-    })()}
+    {!imgError ? (
+      <img
+        src="/images/about/campus.png"
+        alt="Campus HENCIA"
+        className="w-full h-48 sm:h-64 lg:h-80 object-cover"
+        onError={() => setImgError(true)}
+      />
+    ) : (
+      <div className="flex items-center justify-center w-full h-48 sm:h-64 lg:h-80 bg-gray-200 dark:bg-gray-800">
+        <span className="text-sm opacity-70">Image indisponible</span>
+      </div>
+    )}
   </div>
 </div>
 
