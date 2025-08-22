@@ -1,14 +1,17 @@
+"use client";
 import React, { useState } from "react";
-import { MapPin } from 'lucide-react';
+import { MapPin } from "lucide-react";
 
 interface CampusProps {
   onNavigateToCampus?: (campus: string) => void;
 }
 
 const Campus: React.FC<CampusProps> = ({ onNavigateToCampus }) => {
-  const [hoveredCampus, setHoveredCampus] = React.useState<string>('');
+  // Hooks au top-level du composant
+  const [hoveredCampus, setHoveredCampus] = useState<string>("");
   const [imgError, setImgError] = useState(false);
 
+  // Données (fermé proprement par ], ;)
   const campusData = [
     { name: "Paris", image: "/images/campus/ecole marketing paris.jpg" },
     { name: "Saint-Quentin en Yvelines", image: "/images/campus/ecole marketing versaille.jpg" },
@@ -17,11 +20,14 @@ const Campus: React.FC<CampusProps> = ({ onNavigateToCampus }) => {
     { name: "Lille", image: "/images/campus/ecole marketing lille.jpg" },
     { name: "Montpellier", image: "/images/campus/ecole marketing montpellier.jpg" },
     { name: "Nice", image: "/images/campus/ecole marketing nice.jpeg" },
-    { name: "Bordeaux", image: "/images/campus/ecole de marketing bordeaux.jpg" }
+    { name: "Bordeaux", image: "/images/campus/ecole de marketing bordeaux.jpg" },
   ];
 
   return (
-    <section id="campus" className="py-20 bg-gradient-to-br from-gray-800 to-gray-700 dark:from-gray-100 dark:to-gray-200 relative">
+    <section
+      id="campus"
+      className="py-20 bg-gradient-to-br from-gray-800 to-gray-700 dark:from-gray-100 dark:to-gray-200 relative"
+    >
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#6366f1]/10 rounded-full blur-3xl"></div>
@@ -34,12 +40,16 @@ const Campus: React.FC<CampusProps> = ({ onNavigateToCampus }) => {
           {/* Titre et texte à gauche */}
           <div className="text-left mb-8 lg:mb-0 flex-1 lg:pr-8 px-4 lg:px-0">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white dark:text-gray-800 mb-4">
-              Nos <span className="bg-gradient-to-r from-[#6366f1] to-purple-400 bg-clip-text text-transparent">Campus</span>
+              Nos{" "}
+              <span className="bg-gradient-to-r from-[#6366f1] to-purple-400 bg-clip-text text-transparent">
+                Campus
+              </span>
             </h2>
             <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 dark:text-gray-600 max-w-2xl">
-             Retrouvez HENCIA Business School, votre école de commerce, dans 8 villes de France pour une formation de proximité, alliant excellence académique et immersion digitale.
+              Retrouvez HENCIA Business School, votre école de commerce, dans 8 villes de France pour une formation de
+              proximité, alliant excellence académique et immersion digitale.
             </p>
-            
+
             {/* Icône et feature en dessous du texte */}
             <div className="flex items-center mt-6">
               <div className="w-12 h-12 bg-[#6366f1]/20 rounded-full flex items-center justify-center mr-4">
@@ -47,32 +57,29 @@ const Campus: React.FC<CampusProps> = ({ onNavigateToCampus }) => {
               </div>
               <div>
                 <h4 className="text-white dark:text-gray-800 font-semibold mb-1">Accès facilité</h4>
-                <p className="text-gray-400 dark:text-gray-600 text-sm">
-                  Campus à 5 min. des transports en commun.
-                </p>
+                <p className="text-gray-400 dark:text-gray-600 text-sm">Campus à 5 min. des transports en commun.</p>
               </div>
             </div>
           </div>
 
-
           {/* Image à droite */}
-<div className="flex-shrink-0 w-full lg:w-[28rem] px-4 lg:px-0">
-  <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-    {!imgError ? (
-      <img
-        src="/images/about/campus.png"
-        alt="Campus HENCIA"
-        className="w-full h-48 sm:h-64 lg:h-80 object-cover"
-        onError={() => setImgError(true)}
-      />
-    ) : (
-      <div className="flex items-center justify-center w-full h-48 sm:h-64 lg:h-80 bg-gray-200 dark:bg-gray-800">
-        <span className="text-sm opacity-70">Image indisponible</span>
-      </div>
-    )}
-  </div>
-</div>
-
+          <div className="flex-shrink-0 w-full lg:w-[28rem] px-4 lg:px-0">
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+              {!imgError ? (
+                <img
+                  src="/images/about/campus.png"
+                  alt="Campus HENCIA"
+                  className="w-full h-48 sm:h-64 lg:h-80 object-cover"
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <div className="flex items-center justify-center w-full h-48 sm:h-64 lg:h-80 bg-gray-200 dark:bg-gray-800">
+                  <span className="text-sm opacity-70">Image indisponible</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
           
           
