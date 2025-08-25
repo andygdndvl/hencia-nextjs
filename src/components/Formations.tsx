@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Clock, Users, Award } from 'lucide-react';
@@ -7,8 +9,32 @@ interface FormationsProps {
   onNavigateToCandidature?: () => void;
 }
 
+/* ===================== */
+/*        TYPES TS       */
+/* ===================== */
+type Tab = 'postbac' | 'bachelor' | 'mastere';
+
+type Formation = {
+  title: string;
+  subtitle: string;
+  duration: string;
+  students: string;
+  level: string;
+  description: string;
+  skills: string[];
+  image: string;
+  opportunities: string[];
+};
+
+type FormationsMap = {
+  postbac: { formations: Formation[] };
+  bachelor: Formation;
+  mastere: Formation;
+};
+
 const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNavigateToCandidature }) => {
-  const [activeTab, setActiveTab] = useState('postbac');
+  const [activeTab, setActiveTab] = useState<Tab>('postbac');
+  const [currentFormationIndex, setCurrentFormationIndex] = useState(0);
 
   const tabs = [
     { id: 'postbac', label: 'Postbac' },
@@ -16,7 +42,7 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
     { id: 'mastere', label: 'Mastère' }
   ];
 
-  const formations = {
+  const formations: FormationsMap = {
     postbac: {
       formations: [
         {
@@ -56,11 +82,13 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
     }
   };
 
-  const [currentFormationIndex, setCurrentFormationIndex] = useState(0);
-  
-  const currentFormation = activeTab === 'postbac' 
-    ? formations[activeTab].formations[currentFormationIndex]
-    : formations[activeTab];
+  // ✅ Plus d'accès formations[activeTab] avec une string non typée
+  const currentFormation =
+    activeTab === 'postbac'
+      ? formations.postbac.formations[currentFormationIndex]
+      : activeTab === 'bachelor'
+        ? formations.bachelor
+        : formations.mastere;
 
   return (
     <section id="formations" className="py-20 bg-gray-900 dark:bg-gray-50 relative">
@@ -82,7 +110,7 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => setActiveTab(tab.id as Tab)}
                   className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${
                     activeTab === tab.id
                       ? 'bg-gradient-to-r from-[#6366f1] to-purple-600 text-white shadow-lg'
@@ -101,11 +129,12 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
           {/* Affichage des formations */}
           {activeTab === 'postbac' ? (
             <div className="space-y-8">
-              {formations[activeTab].formations.map((formation, index) => (
+              {/* Ici on peut accéder directement à formations.postbac.formations */}
+              {formations.postbac.formations.map((formation, index) => (
                 <div 
                   key={index}
                   onClick={() => onNavigateToFormation('bachelor-12')}
-                  className="bg-gray-900/50 dark:bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-800 dark:border-gray-300 hover:border-[#6366f1]/50 transition-all duration-500 transform hover:scale-[1.02] group cursor-pointer"
+                  className="bg-gray-900/50 dark:bg:white/50 backdrop-blur-sm rounded-2xl border border-gray-800 dark:border-gray-300 hover:border-[#6366f1]/50 transition-all duration-500 transform hover:scale-[1.02] group cursor-pointer"
                 >
                   <div className="p-6 lg:p-8 h-full">
                     {/* Title with badge aligned */}
@@ -174,7 +203,7 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
                     <div className="flex flex-col sm:flex-row gap-4">
                       <Link
                         href="/candidature"
-                        prefetch={true}
+                        prefetch
                         className="flex-1 bg-gradient-to-r from-[#f43f5e] to-[#e11d48] text-white py-3 px-4 sm:px-6 rounded-lg font-semibold group-hover:from-[#e11d48] group-hover:to-[#be123c] transition-all duration-300 flex items-center justify-center text-sm sm:text-base"
                       >
                         Candidater
@@ -182,7 +211,7 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
                       </Link>
                       <Link
                         href={index === 0 ? '/bachelor-12' : '/bts-ndrc'}
-                        prefetch={true}
+                        prefetch
                         className="flex-1 bg-gradient-to-r from-[#6366f1] to-[#4f46e5] text-white py-3 px-4 sm:px-6 rounded-lg font-semibold group-hover:from-[#4f46e5] group-hover:to-[#4338ca] transition-all duration-300 flex items-center justify-center text-sm sm:text-base"
                       >
                         En savoir plus
@@ -202,7 +231,7 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
               }`}
             >
               <div className="p-6 lg:p-8 h-full relative">
-                {/* Badge "À venir" centré pour le Mastère */}
+                {/* Badge "À venir" pour le Mastère */}
                 {activeTab === 'mastere' && (
                   <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-900/80 rounded-2xl">
                     <div className="bg-orange-[#f43f5e] text-white px-8 py-4 rounded-xl text-4xl font-bold shadow-2xl">
@@ -312,12 +341,12 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
                   <Link
                     href={activeTab === 'mastere' ? '#' : '/candidature'}
                     prefetch={activeTab !== 'mastere'}
-                    disabled={activeTab === 'mastere'}
+                    aria-disabled={activeTab === 'mastere'}
                     className={`flex-1 py-3 px-4 sm:px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center text-sm sm:text-base ${
-                    activeTab === 'mastere' 
-                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed pointer-events-none' 
-                      : 'bg-gradient-to-r from-[#f43f5e] to-[#e11d48] text-white group-hover:from-[#e11d48] group-hover:to-[#be123c]'
-                  }`}
+                      activeTab === 'mastere' 
+                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed pointer-events-none' 
+                        : 'bg-gradient-to-r from-[#f43f5e] to-[#e11d48] text-white group-hover:from-[#e11d48] group-hover:to-[#be123c]'
+                    }`}
                   >
                     {activeTab === 'mastere' ? 'Bientôt disponible' : 'Candidater'}
                     {activeTab !== 'mastere' && <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />}
@@ -325,12 +354,12 @@ const Formations: React.FC<FormationsProps> = ({ onNavigateToFormation, onNaviga
                   <Link
                     href={activeTab === 'mastere' ? '#' : `/${activeTab}`}
                     prefetch={activeTab !== 'mastere'}
-                    disabled={activeTab === 'mastere'}
+                    aria-disabled={activeTab === 'mastere'}
                     className={`flex-1 border-2 py-3 px-4 sm:px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center text-sm sm:text-base ${
-                    activeTab === 'mastere' 
-                      ? 'border-gray-600 text-gray-500 cursor-not-allowed pointer-events-none' 
-                      : 'border-[#6366f1] text-[#6366f1] group-hover:bg-[#6366f1] group-hover:text-white'
-                  }`}
+                      activeTab === 'mastere' 
+                        ? 'border-gray-600 text-gray-500 cursor-not-allowed pointer-events-none' 
+                        : 'border-[#6366f1] text-[#6366f1] group-hover:bg-[#6366f1] group-hover:text-white'
+                    }`}
                   >
                     {activeTab === 'mastere' ? 'Informations à venir' : 'En savoir plus'}
                   </Link>
