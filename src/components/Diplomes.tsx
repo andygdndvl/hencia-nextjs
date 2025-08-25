@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { Award, CheckCircle, Shield } from 'lucide-react';
 
@@ -39,9 +40,11 @@ const Diplomes = () => {
                   src="/images/about/diplomereconnu.png"
                   alt="Diplômes reconnus par l'État"
                   className="w-full h-auto object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling.style.display = 'flex';
+                  onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                    const img = e.currentTarget;
+                    img.style.display = 'none';
+                    const next = img.nextElementSibling as HTMLElement | null;
+                    if (next) next.style.display = 'flex';
                   }}
                 />
                 {/* Fallback when image not found */}
